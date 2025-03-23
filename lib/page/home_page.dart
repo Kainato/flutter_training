@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
