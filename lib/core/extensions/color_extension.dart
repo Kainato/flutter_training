@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-extension ColorUtils on Color {
+extension ColorExtension on Color {
   Color secondary([double amount = 0.1]) {
     final hsl = HSLColor.fromColor(this);
     final hslLight = hsl.withLightness(

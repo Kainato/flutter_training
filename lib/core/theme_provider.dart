@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/core/cache/cache_key.dart';
-import 'package:flutter_training/core/extensions/color_utils.dart';
+import 'package:flutter_training/core/extensions/color_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Classe que define o tema do app.
