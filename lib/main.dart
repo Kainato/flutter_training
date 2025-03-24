@@ -7,15 +7,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final int? color = prefs.getInt(Cachekey.themeColor.value);
+  final bool isDarkMode = prefs.getBool(Cachekey.isDarkMode.value) ?? false;
+  final bool isLogged = prefs.getBool(Cachekey.isLogged.value) ?? false;
 
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeProvider(
         color != null ? Color(color) : Colors.blue,
       ),
-      child: MaterialSettings(),
+      child: MaterialSettings(
+        isDarkMode: isDarkMode,
+        isLogged: isLogged,
+      ),
     ),
   );
 }

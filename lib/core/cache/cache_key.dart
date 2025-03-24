@@ -16,4 +16,15 @@ extension CacheKeyExtension on Cachekey {
         return 'themeColor';
     }
   }
+
+  dynamic get defaultValue {
+    switch (this) {
+      case Cachekey.isLogged:
+        return false;
+      case Cachekey.isDarkMode:
+        return false;
+      case Cachekey.themeColor:
+        return 0xFF2196F3;
+    }
+  }
 }
