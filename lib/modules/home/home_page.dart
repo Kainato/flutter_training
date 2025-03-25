@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-// import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
-// import 'package:flutter_training/core/theme_controller.dart';
-// import 'package:provider/provider.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_training/core/cache/cache_key.dart';
+import 'package:flutter_training/core/enum/app_text_theme.dart';
+import 'package:flutter_training/core/theme/theme_controller.dart';
+import 'package:flutter_training/modules/auth/login_page.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../widget/page/standard_scaffold.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,7 +31,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final ThemeController themeController = Get.find();
+    return StandardScaffold(
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -39,45 +44,43 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Text('Hello World!'),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Digite algo',
-                    border: OutlineInputBorder(),
+                TextButton(
+                  child: Text(
+                    'Mudar tema',
+                    style: AppTextTheme.titleMedium.style.copyWith(
+                      color: themeController.primaryColor,
+                    ),
                   ),
+                  onPressed: () {
+                    Get.dialog(
+                      AlertDialog(
+                        content: BlockPicker(
+                          pickerColor: themeController.primaryColor,
+                          onColorChanged: (newcolor) {
+                            themeController.primaryColor = newcolor;
+                            prefs.setInt(
+                              Cachekey.themeColor.value,
+                              newcolor.toARGB32(),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                // ElevatedButton(
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: themeProvider.primaryColor,
-                //   ),
-                //   onPressed: () {
-                //     themeProvider.primaryColor =
-                //         themeProvider.primaryColor == Colors.blue
-                //             ? Colors.red
-                //             : Colors.blue;
-                //   },
-                //   child: Text(
-                //     'Clique aqui',
-                //     style: themeProvider.primaryColor.computeLuminance() > 0.5
-                //         ? TextStyle(color: Colors.black)
-                //         : TextStyle(color: Colors.white),
-                //   ),
-                // ),
-                // BlockPicker(
-                //   onColorChanged: (newcolor) {
-                //     themeProvider.primaryColor = newcolor;
-                //     prefs.setInt('color', newcolor.toARGB32());
-                //   },
-                //   pickerColor: themeProvider.primaryColor,
-                // ),
               ],
             ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.change_circle),
-        onPressed: () {},
+        child: Icon(Icons.logout),
+        onPressed: () {
+          SharedPreferences.getInstance().then((value) {
+            value.clear();
+            Get.offAll(LoginPage());
+          });
+        },
       ),
     );
   }

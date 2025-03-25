@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/core/extensions/color_extension.dart';
+import 'package:flutter_training/core/enum/app_text_theme.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,12 +14,18 @@ class ThemeController extends GetxController {
     _loadPrimaryColor();
   }
 
+  Color get primaryColor => _primaryColor.value;
+
+  set primaryColor(Color value) {
+    _primaryColor.value = value;
+    _savePrimaryColorToPrefs(value);
+  }
+
   void toggleTheme() {
     themeMode.value =
         themeMode.value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
 
-    _primaryColor.value =
-        _primaryColor.value == Colors.blue ? Colors.red : Colors.blue;
+    primaryColor = primaryColor == Colors.blue ? Colors.red : Colors.blue;
   }
 
   void _loadThemeMode() async {
@@ -41,69 +47,87 @@ class ThemeController extends GetxController {
     }
   }
 
+  void _savePrimaryColorToPrefs(Color color) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('primaryColor', color.value);
+  }
+
   void setThemeMode(ThemeMode mode) async {
     themeMode.value = mode;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('themeMode', mode.toString());
   }
 
-  void setPrimaryColor(Color color) async {
-    _primaryColor.value = color;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('primaryColor', color.value);
+  Color getColor(Color lightColor, Color darkColor) {
+    return themeMode.value == ThemeMode.light ? lightColor : darkColor;
   }
 
-  Color get primaryColor => _primaryColor.value;
-  Color get onPrimaryColor => lightThemeData.colorScheme.onPrimary;
-  Color get secondaryColor => _primaryColor.value.secondary();
-  Color get tertiaryColor => _primaryColor.value.tertiary();
-  Color get surfaceColor => lightThemeData.colorScheme.surface;
-  Color get errorColor => lightThemeData.colorScheme.error;
+  Color get onPrimaryColor => getColor(
+        lightThemeData.colorScheme.onPrimary,
+        darkThemeData.colorScheme.onPrimary,
+      );
+  Color get secondaryColor => getColor(
+        lightThemeData.colorScheme.secondary,
+        darkThemeData.colorScheme.secondary,
+      );
+  Color get onSecondaryColor => getColor(
+        lightThemeData.colorScheme.onSecondary,
+        darkThemeData.colorScheme.onSecondary,
+      );
+  Color get tertiaryColor => getColor(
+        lightThemeData.colorScheme.tertiary,
+        darkThemeData.colorScheme.tertiary,
+      );
+  Color get onTertiaryColor => getColor(
+        lightThemeData.colorScheme.onTertiary,
+        darkThemeData.colorScheme.onTertiary,
+      );
+  Color get surfaceColor => getColor(
+        lightThemeData.colorScheme.surface,
+        darkThemeData.colorScheme.surface,
+      );
+  Color get onSurfaceColor => getColor(
+        lightThemeData.colorScheme.onSurface,
+        darkThemeData.colorScheme.onSurface,
+      );
+  Color get errorColor => getColor(
+        lightThemeData.colorScheme.error,
+        darkThemeData.colorScheme.error,
+      );
+  Color get onErrorColor => getColor(
+        lightThemeData.colorScheme.onError,
+        darkThemeData.colorScheme.onError,
+      );
 
   ThemeData get lightThemeData {
-    Color onLightSurface = _primaryColor.value.computeLuminance() > 0.5
-        ? Colors.black
-        : Colors.white;
+    final scheme = ColorScheme.fromSeed(seedColor: _primaryColor.value);
+
     return ThemeData(
       brightness: Brightness.light,
-      scaffoldBackgroundColor: Colors.white,
-      primaryColor: _primaryColor.value,
+      scaffoldBackgroundColor: scheme.surface,
+      primaryColor: scheme.primary,
       appBarTheme: AppBarTheme(
-        backgroundColor: _primaryColor.value,
-        iconTheme: IconThemeData(color: onLightSurface),
+        backgroundColor: scheme.primary,
+        titleTextStyle: AppTextTheme.headlineMedium.style,
+        iconTheme: IconThemeData(color: scheme.onPrimary),
       ),
-      colorScheme: ColorScheme.light(
-        primary: _primaryColor.value,
-        secondary: _primaryColor.value.secondary(),
-        tertiary: _primaryColor.value.tertiary(),
-        onPrimary: onLightSurface,
-        onSecondary: onLightSurface,
-        onTertiary: onLightSurface,
-        surface: Colors.white,
-      ),
+      colorScheme: scheme,
     );
   }
 
   ThemeData get darkThemeData {
-    Color onDarkSurface = _primaryColor.value.computeLuminance() > 0.5
-        ? Colors.white
-        : Colors.black;
+    final scheme = ColorScheme.fromSeed(
+        seedColor: _primaryColor.value, brightness: Brightness.dark);
+
     return ThemeData(
-      primaryColor: _primaryColor.value,
-      scaffoldBackgroundColor: Colors.white,
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: scheme.surface,
+      primaryColor: scheme.primary,
       appBarTheme: AppBarTheme(
-        backgroundColor: _primaryColor.value,
-        iconTheme: IconThemeData(color: onDarkSurface),
+        backgroundColor: scheme.primary,
+        iconTheme: IconThemeData(color: scheme.onPrimary),
       ),
-      colorScheme: ColorScheme.light(
-        primary: _primaryColor.value,
-        secondary: _primaryColor.value.secondary(),
-        tertiary: _primaryColor.value.tertiary(),
-        onPrimary: onDarkSurface,
-        onSecondary: onDarkSurface,
-        onTertiary: onDarkSurface,
-        surface: Colors.white,
-      ),
+      colorScheme: scheme,
     );
   }
 }

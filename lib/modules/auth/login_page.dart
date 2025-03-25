@@ -7,15 +7,26 @@ import '../../core/theme/theme_controller.dart';
 import '../../widget/form/standard_text_form_field.dart';
 import '../../widget/paint/wave_painter.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final ThemeController themeController = Get.find();
-    final LoginGetxController loginGetxController =
-        Get.put(LoginGetxController());
+  State<LoginPage> createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
+  final ThemeController themeController = Get.find();
+  final LoginGetxController loginGetxController =
+      Get.put(LoginGetxController());
+
+  @override
+  void dispose() {
+    loginGetxController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       behavior: HitTestBehavior.opaque,
@@ -68,7 +79,8 @@ class LoginPage extends StatelessWidget {
                         keyboardType: TextInputType.emailAddress,
                         focusNode: loginGetxController.emailFocus,
                         controller: loginGetxController.emailController,
-                        onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                        onFieldSubmitted: (_) =>
+                            FocusScope.of(context).nextFocus(),
                       ),
                       Obx(
                         () => StandardTextFormField(
@@ -80,7 +92,7 @@ class LoginPage extends StatelessWidget {
                           obscureText: loginGetxController.obscureText.value,
                           suffixIcon: IconButton(
                             icon: Icon(
-                              loginGetxController.obscureText.value
+                              !loginGetxController.obscureText.value
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                             ),
