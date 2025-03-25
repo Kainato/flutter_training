@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+// import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 // import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
-import 'package:flutter_training/core/theme_provider.dart';
-import 'package:provider/provider.dart';
+// import 'package:flutter_training/core/theme_controller.dart';
+// import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,7 +27,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
@@ -47,30 +46,30 @@ class _HomePageState extends State<HomePage> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: themeProvider.primaryColor,
-                  ),
-                  onPressed: () {
-                    themeProvider.primaryColor =
-                        themeProvider.primaryColor == Colors.blue
-                            ? Colors.red
-                            : Colors.blue;
-                  },
-                  child: Text(
-                    'Clique aqui',
-                    style: themeProvider.primaryColor.computeLuminance() > 0.5
-                        ? TextStyle(color: Colors.black)
-                        : TextStyle(color: Colors.white),
-                  ),
-                ),
-                BlockPicker(
-                  onColorChanged: (newcolor) {
-                    themeProvider.primaryColor = newcolor;
-                    prefs.setInt('color', newcolor.toARGB32());
-                  },
-                  pickerColor: themeProvider.primaryColor,
-                ),
+                // ElevatedButton(
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: themeProvider.primaryColor,
+                //   ),
+                //   onPressed: () {
+                //     themeProvider.primaryColor =
+                //         themeProvider.primaryColor == Colors.blue
+                //             ? Colors.red
+                //             : Colors.blue;
+                //   },
+                //   child: Text(
+                //     'Clique aqui',
+                //     style: themeProvider.primaryColor.computeLuminance() > 0.5
+                //         ? TextStyle(color: Colors.black)
+                //         : TextStyle(color: Colors.white),
+                //   ),
+                // ),
+                // BlockPicker(
+                //   onColorChanged: (newcolor) {
+                //     themeProvider.primaryColor = newcolor;
+                //     prefs.setInt('color', newcolor.toARGB32());
+                //   },
+                //   pickerColor: themeProvider.primaryColor,
+                // ),
               ],
             ),
           ),

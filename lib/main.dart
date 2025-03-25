@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/core/cache/cache_key.dart';
-import 'package:flutter_training/core/material_settings.dart';
-import 'package:flutter_training/core/theme_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_training/core/theme/material_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -14,14 +12,10 @@ Future<void> main() async {
   final bool isLogged = prefs.getBool(Cachekey.isLogged.value) ?? false;
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(
-        color != null ? Color(color) : Colors.blue,
-      ),
-      child: MaterialSettings(
-        isDarkMode: isDarkMode,
-        isLogged: isLogged,
-      ),
+    MaterialSettings(
+      isDarkMode: isDarkMode,
+      isLogged: isLogged,
+      color: color,
     ),
   );
 }

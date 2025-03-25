@@ -10,10 +10,8 @@ class LoadingAppPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Carregando...'),
       ),
-      body: Container(
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ),
+      body: const Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
