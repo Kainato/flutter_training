@@ -3,7 +3,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_training/core/cache/cache_key.dart';
 import 'package:flutter_training/core/enum/app_text_theme.dart';
 import 'package:flutter_training/core/theme/theme_controller.dart';
-import 'package:flutter_training/modules/auth/login_page.dart';
+import 'package:flutter_training/modules/home/home_getx_controller.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,56 +32,66 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final ThemeController themeController = Get.find();
-    return StandardScaffold(
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          behavior: HitTestBehavior.opaque,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              spacing: 20,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                TextButton(
-                  child: Text(
-                    'Mudar tema',
-                    style: AppTextTheme.titleMedium.style.copyWith(
-                      color: themeController.primaryColor,
-                    ),
-                  ),
-                  onPressed: () {
-                    Get.dialog(
-                      AlertDialog(
-                        content: BlockPicker(
-                          pickerColor: themeController.primaryColor,
-                          onColorChanged: (newcolor) {
-                            themeController.primaryColor = newcolor;
-                            prefs.setInt(
-                              Cachekey.themeColor.value,
-                              newcolor.toARGB32(),
-                            );
-                          },
-                        ),
+    final HomeGetxController homeGetxController = Get.put(HomeGetxController());
+    return Obx(() {
+      return StandardScaffold(
+        body: SafeArea(
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                spacing: 20,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  TextButton(
+                    child: Text(
+                      'Mudar tema',
+                      style: AppTextTheme.titleMedium.style.copyWith(
+                        color: themeController.primaryColor,
                       ),
-                    );
-                  },
-                ),
-              ],
+                    ),
+                    onPressed: () {
+                      Get.dialog(
+                        AlertDialog(
+                          content: BlockPicker(
+                            pickerColor: themeController.primaryColor,
+                            onColorChanged: (newcolor) {
+                              themeController.primaryColor = newcolor;
+                              prefs.setInt(
+                                Cachekey.themeColor.value,
+                                newcolor.toARGB32(),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.logout),
-        onPressed: () {
-          SharedPreferences.getInstance().then((value) {
-            value.clear();
-            Get.offAll(LoginPage());
-          });
-        },
-      ),
-    );
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: homeGetxController.currentIndex.value,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home_rounded),
+              label: 'Página inicial',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_outlined),
+              activeIcon: Icon(Icons.settings_rounded),
+              label: 'Configurações',
+            ),
+          ],
+          onTap: (index) => homeGetxController.changeIndex(index),
+        ),
+      );
+    });
   }
 }

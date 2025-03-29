@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class StandardScaffold extends StatelessWidget {
   final Widget body;
   final FloatingActionButton? floatingActionButton;
+  final BottomNavigationBar? bottomNavigationBar;
 
   const StandardScaffold({
     super.key,
     required this.body,
     this.floatingActionButton,
+    this.bottomNavigationBar,
   });
 
   @override
@@ -24,6 +26,7 @@ class StandardScaffold extends StatelessWidget {
         ),
       ),
       floatingActionButton: floatingActionButton,
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 }
