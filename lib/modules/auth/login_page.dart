@@ -73,15 +73,17 @@ class _LoginPageState extends State<LoginPage> {
                     spacing: 16.0,
                     children: [
                       StandardTextFormField(
-                        isRequired: true,
-                        label: 'E-mail',
-                        hint: 'Exemplo: seu_email@provedor.com',
-                        keyboardType: TextInputType.emailAddress,
-                        focusNode: loginGetxController.emailFocus,
-                        controller: loginGetxController.emailController,
-                        onFieldSubmitted: (_) =>
-                            FocusScope.of(context).nextFocus(),
-                      ),
+                          isRequired: true,
+                          label: 'E-mail',
+                          hint: 'Exemplo: seu_email@provedor.com',
+                          keyboardType: TextInputType.emailAddress,
+                          focusNode: loginGetxController.emailFocus,
+                          controller: loginGetxController.emailController,
+                          onFieldSubmitted: (_) {
+                            loginGetxController.emailFocus.unfocus();
+                            FocusScope.of(context).requestFocus(
+                                loginGetxController.passwordFocus);
+                          }),
                       Obx(
                         () => StandardTextFormField(
                           isRequired: true,
@@ -99,6 +101,10 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () =>
                                 loginGetxController.toggleObscureText(),
                           ),
+                          onFieldSubmitted: (_) {
+                            loginGetxController.passwordFocus.unfocus();
+                            loginGetxController.login();
+                          },
                         ),
                       ),
                       FloatingActionButton.extended(
