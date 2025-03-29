@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class StandardScaffold extends StatelessWidget {
   final Widget body;
   final FloatingActionButton? floatingActionButton;
-  final BottomNavigationBar? bottomNavigationBar;
+  final Widget? bottomNavigationBar;
 
   const StandardScaffold({
     super.key,
@@ -22,7 +22,7 @@ class StandardScaffold extends StatelessWidget {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           behavior: HitTestBehavior.opaque,
-          child: body,
+          child: Padding(padding: const EdgeInsets.all(16), child: body),
         ),
       ),
       floatingActionButton: floatingActionButton,

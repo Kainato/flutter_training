@@ -8,6 +8,16 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SettingsGetxController controller = Get.put(SettingsGetxController());
-    return const Placeholder();
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () => controller.logout(),
+            child: const Text('Voltar para o login'),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter_training/modules/auth/login_page.dart';
 import 'package:get/get.dart';
 
 class SettingsGetxController {
@@ -10,5 +11,9 @@ class SettingsGetxController {
 
   void changeLanguage(String lang) {
     language.value = lang;
+  }
+
+  void logout() {
+    Get.offAll(LoginPage());
   }
 }

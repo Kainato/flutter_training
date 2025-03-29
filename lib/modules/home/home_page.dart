@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/modules/home/home_getx_controller.dart';
+import 'package:flutter_training/modules/home/tabs/gemini/gemini_page.dart';
 import 'package:flutter_training/modules/home/tabs/settings/settings_page.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,18 +30,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final HomeGetxController homeGetxController = Get.put(HomeGetxController());
-    return Obx(() {
-      return StandardScaffold(
-        body: PageView(
-          controller: homeGetxController.pageController,
-          onPageChanged: (index) =>
-              homeGetxController.currentIndex.value = index,
-          children: const [
-            Center(child: Text('Página inicial')),
-            SettingsPage(),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
+    return StandardScaffold(
+      body: PageView(
+        controller: homeGetxController.pageController,
+        onPageChanged: (index) => homeGetxController.currentIndex.value = index,
+        children: const [
+          Center(child: Text('Página inicial')),
+          GeminiPage(),
+          SettingsPage(),
+        ],
+      ),
+      bottomNavigationBar: Obx(() {
+        return BottomNavigationBar(
           currentIndex: homeGetxController.currentIndex.value,
           items: [
             BottomNavigationBarItem(
@@ -49,14 +50,19 @@ class _HomePageState extends State<HomePage> {
               label: 'Página inicial',
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.star_outline),
+              activeIcon: Icon(Icons.star_rounded),
+              label: 'Gemini',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.settings_outlined),
               activeIcon: Icon(Icons.settings_rounded),
               label: 'Configurações',
             ),
           ],
           onTap: (index) => homeGetxController.changeIndex(index),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 }
