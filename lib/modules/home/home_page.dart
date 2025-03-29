@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:flutter_training/core/cache/cache_key.dart';
-import 'package:flutter_training/core/enum/app_text_theme.dart';
-import 'package:flutter_training/core/theme/theme_controller.dart';
 import 'package:flutter_training/modules/home/home_getx_controller.dart';
+import 'package:flutter_training/modules/home/tabs/settings/settings_page.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,49 +28,17 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeController themeController = Get.find();
     final HomeGetxController homeGetxController = Get.put(HomeGetxController());
     return Obx(() {
       return StandardScaffold(
-        body: SafeArea(
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            behavior: HitTestBehavior.opaque,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                spacing: 20,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  TextButton(
-                    child: Text(
-                      'Mudar tema',
-                      style: AppTextTheme.titleMedium.style.copyWith(
-                        color: themeController.primaryColor,
-                      ),
-                    ),
-                    onPressed: () {
-                      Get.dialog(
-                        AlertDialog(
-                          content: BlockPicker(
-                            pickerColor: themeController.primaryColor,
-                            onColorChanged: (newcolor) {
-                              themeController.primaryColor = newcolor;
-                              prefs.setInt(
-                                Cachekey.themeColor.value,
-                                newcolor.toARGB32(),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
+        body: PageView(
+          controller: homeGetxController.pageController,
+          onPageChanged: (index) =>
+              homeGetxController.currentIndex.value = index,
+          children: const [
+            Center(child: Text('Página inicial')),
+            SettingsPage(),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: homeGetxController.currentIndex.value,
