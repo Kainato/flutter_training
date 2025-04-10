@@ -6,7 +6,7 @@ class FTScaffold extends StatelessWidget {
   final Widget? bottomAppBar;
   final Widget body;
   final Widget? fab;
-  final List<BottomNavigationBarItem> bottomNavigationBar;
+  final Widget? bottomNavigationBar;
 
   const FTScaffold({
     super.key,
@@ -14,7 +14,7 @@ class FTScaffold extends StatelessWidget {
     this.bottomAppBar,
     required this.body,
     this.fab,
-    this.bottomNavigationBar = const [],
+    this.bottomNavigationBar,
   });
 
   @override
@@ -37,9 +37,7 @@ class FTScaffold extends StatelessWidget {
       ),
       body: body,
       floatingActionButton: fab,
-      bottomNavigationBar: bottomNavigationBar.isNotEmpty
-          ? BottomNavigationBar(items: bottomNavigationBar)
-          : null,
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 }
