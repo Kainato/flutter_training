@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/core/theme_provider.dart';
 import 'package:flutter_training/page/home_page.dart';
-import 'package:flutter_training/page/login_page.dart';
+import 'package:flutter_training/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class MaterialSettings extends StatelessWidget {
@@ -20,19 +19,11 @@ class MaterialSettings extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (BuildContext context, ThemeProvider value, Widget? child) {
         return MaterialApp(
-          title: 'Flutter training',
+          title: 'Flutter Guide',
           theme: value.lightThemeData,
           darkTheme: value.darkThemeData,
           themeMode: value.themeMode,
-          home: Builder(
-            builder: (context) {
-              if (isLogged) {
-                return HomePage();
-              } else {
-                return LoginPage();
-              }
-            },
-          ),
+          home: HomePage(),
         );
       },
     );

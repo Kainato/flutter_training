@@ -51,11 +51,40 @@ class ThemeProvider extends ChangeNotifier {
     prefs.setString(Cachekey.themeColor.value, newColor.toString());
   }
 
+  /// Função que padroniza os textos do aplicativo.
+  TextStyle ftTextStyle({required double size, bool isBold = false, bool isItalic = false}) {
+    return TextStyle(
+      fontSize: size,
+      fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+      fontStyle: isItalic ? FontStyle.italic : FontStyle.normal,
+      fontFamily: 'Nunito',
+      color: _primaryColor.computeLuminance() > 0.5
+          ? Colors.black
+          : Colors.white,
+    );
+  }
+
   /// Retorna o tema do app.
   ThemeData get lightThemeData {
     return ThemeData(
-      useMaterial3: true,
       primaryColor: _primaryColor,
+      textTheme: TextTheme(
+        titleLarge: ftTextStyle(size: 20, isBold: true),
+        titleMedium: ftTextStyle(size: 18),
+        titleSmall: ftTextStyle(size: 16),
+        bodyLarge: ftTextStyle(size: 16),
+        bodyMedium: ftTextStyle(size: 14),
+        bodySmall: ftTextStyle(size: 12),
+        labelLarge: ftTextStyle(size: 16),
+        labelMedium: ftTextStyle(size: 14),
+        labelSmall: ftTextStyle(size: 12),
+        displayLarge: ftTextStyle(size: 24, isBold: true),
+        displayMedium: ftTextStyle(size: 20, isBold: true),
+        displaySmall: ftTextStyle(size: 18, isBold: true),
+        headlineLarge: ftTextStyle(size: 24, isBold: true),
+        headlineMedium: ftTextStyle(size: 20, isBold: true),
+        headlineSmall: ftTextStyle(size: 18, isBold: true),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all<Color>(_primaryColor),
@@ -88,7 +117,6 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData get darkThemeData {
     return ThemeData(
-      useMaterial3: true,
       primaryColor: _primaryColor,
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
