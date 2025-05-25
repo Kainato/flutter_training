@@ -24,3 +24,4 @@ scripts:
   create_web_folder: mkdir docs
   # create_web_files: xcopy -r build/web/* docs/
   create_web_files: xcopy /E /H /Y build\web\* docs\
+  flutter_clean: flutter clean
