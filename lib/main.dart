@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/app/home_page.dart';
+import 'package:flutter_training/routes/app_routes.dart';
 
 void main() {
   runApp(const MainApp());
 }
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -13,7 +15,9 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
-      home: HomePage(),
+      navigatorKey: navigatorKey,
+      initialRoute: AppRoutes.home.path,
+      routes: AppRoutesExtension.allRoutes,
       theme: ThemeData(
         useMaterial3: false,
         brightness: Brightness.dark,

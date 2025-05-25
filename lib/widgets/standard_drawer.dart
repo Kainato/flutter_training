@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/extension/build_context_extension.dart';
+import 'package:flutter_training/routes/app_routes.dart';
 
-import '../app/home_page.dart';
-import '../app/increment_page.dart';
+import '../routes/app_navigator.dart';
 
 class StandardDrawer extends StatelessWidget {
   const StandardDrawer({super.key});
@@ -16,29 +17,21 @@ class StandardDrawer extends StatelessWidget {
             decoration: BoxDecoration(),
             child: Text(
               'Drawer Header',
-              style: Theme.of(context).textTheme.headlineLarge,
+              style: context.headlineLarge,
               maxLines: 2,
             ),
           ),
           ListTile(
-            title: const Text('Página inicial'),
-            leading: const Icon(Icons.home),
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-            },
+            title: Text(AppRoutes.home.name),
+            leading: Icon(AppRoutes.home.icon),
+            selected: AppRoutes.home.isSelected(context),
+            onTap: () => AppNavigator.pushReplacement(AppRoutes.home),
           ),
           ListTile(
-            title: const Text('Botões'),
-            leading: const Icon(Icons.circle),
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const IncrementPage()),
-              );
-            },
+            title: Text(AppRoutes.increment.name),
+            leading: Icon(AppRoutes.increment.icon),
+            selected: AppRoutes.increment.isSelected(context),
+            onTap: () => AppNavigator.push(AppRoutes.increment),
           ),
         ],
       ),
