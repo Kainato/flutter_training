@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../home_page.dart';
+import '../app/home_page.dart';
+import '../app/increment_page.dart';
 
 class StandardDrawer extends StatelessWidget {
   const StandardDrawer({super.key});
@@ -21,6 +22,7 @@ class StandardDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Página inicial'),
+            leading: const Icon(Icons.home),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -30,8 +32,12 @@ class StandardDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Botões'),
+            leading: const Icon(Icons.circle),
             onTap: () {
-              // Handle item tap
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const IncrementPage()),
+              );
             },
           ),
         ],
